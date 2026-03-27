@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LOCATIONS } from "@/lib/constants";
+import { ImageUploader, VehicleImage } from "@/components/admin/ImageUploader";
 
 function slugify(text: string): string {
   return text
@@ -51,11 +52,11 @@ export default function AddVehiclePage() {
     seats: "",
     top_speed: "",
     zero_to_sixty: "",
-    images_text: "",
     is_featured: false,
     status: "active",
   });
 
+  const [vehicleImages, setVehicleImages] = useState<VehicleImage[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
   useEffect(() => {
@@ -97,10 +98,7 @@ export default function AddVehiclePage() {
     setSaving(true);
     setError(null);
 
-    const images = form.images_text
-      .split("\n")
-      .map((url) => url.trim())
-      .filter(Boolean);
+    const images = vehicleImages.map((img) => img.url);
 
     const specs: Record<string, any> = {};
     if (form.engine) specs.engine = form.engine;
@@ -482,22 +480,18 @@ export default function AddVehiclePage() {
         {/* Images */}
         <Card className="border-white/10 bg-white/5 p-6">
           <h2 className="text-lg font-semibold text-white">Images</h2>
+          <p className="mt-1 text-sm text-white/40">
+            Upload images or paste URLs. Images are auto-optimized to WebP with SEO alt text.
+            Drag to reorder — first image becomes the hero.
+          </p>
           <Separator className="my-4 bg-white/10" />
 
-          <div>
-            <Label htmlFor="images_text" className="text-white/70">
-              Image URLs (one per line)
-            </Label>
-            <Textarea
-              id="images_text"
-              name="images_text"
-              value={form.images_text}
-              onChange={handleChange}
-              rows={4}
-              className="mt-1.5 border-white/10 bg-white/5 text-white placeholder:text-white/30 font-mono text-xs"
-              placeholder={"https://example.com/image1.jpg\nhttps://example.com/image2.jpg"}
-            />
-          </div>
+          <ImageUploader
+            images={vehicleImages}
+            onChange={setVehicleImages}
+            vehicleSlug={form.slug}
+            vehicleName={form.name}
+          />
         </Card>
 
         {/* Locations & Settings */}
