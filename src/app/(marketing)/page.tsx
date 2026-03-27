@@ -1,14 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Phone, Star, MapPin, Clock, ChevronRight } from "lucide-react";
 import { LOCATIONS, TRUST_STATS } from "@/lib/constants";
+import { getFeaturedVehicles } from "@/lib/queries";
+import { VehicleCard } from "@/components/vehicles/VehicleCard";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const featuredVehicles = await getFeaturedVehicles(6);
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background gradient placeholder - will be replaced with actual hero image */}
         <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
 
@@ -48,7 +52,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
           <span className="text-xs uppercase tracking-widest">Scroll</span>
           <div className="h-8 w-px bg-gradient-to-b from-white/30 to-transparent" />
@@ -93,9 +96,7 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex flex-col items-center py-8 gap-2">
-              <div className="flex items-center gap-1">
-                <span className="text-2xl font-bold text-white">28+</span>
-              </div>
+              <span className="text-2xl font-bold text-white">28+</span>
               <span className="text-xs text-white/40 uppercase tracking-wider">
                 Exotic Vehicles
               </span>
@@ -104,7 +105,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Fleet Preview */}
+      {/* Featured Fleet */}
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -120,47 +121,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Placeholder grid - will be replaced with real vehicle data */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: "Lamborghini Huracán EVO", price: "$899", img: "lamborghini" },
-              { name: "Rolls Royce Cullinan", price: "$1,499", img: "rolls-royce" },
-              { name: "Porsche 911 GT3 RS", price: "$999", img: "porsche" },
-              { name: "Ferrari 488 Spider", price: "$1,099", img: "ferrari" },
-              { name: "McLaren 720S", price: "$1,199", img: "mclaren" },
-              { name: "Mercedes-AMG GT", price: "$699", img: "mercedes" },
-            ].map((car) => (
-              <div
-                key={car.name}
-                className="group relative overflow-hidden rounded-lg border border-white/5 bg-card transition-all duration-300 hover:border-gold/20"
-              >
-                {/* Placeholder image area */}
-                <div className="aspect-[16/10] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                  <span className="text-white/20 text-sm uppercase tracking-wider">
-                    {car.img}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-white group-hover:text-gold transition-colors">
-                    {car.name}
-                  </h3>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="text-gold font-bold">
-                      From {car.price}
-                      <span className="text-white/40 text-sm font-normal">
-                        /day
-                      </span>
-                    </span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-gold/30 text-gold hover:bg-gold/10 text-xs"
-                    >
-                      View Details
-                    </Button>
-                  </div>
-                </div>
-              </div>
+            {featuredVehicles.map((vehicle: any) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} />
             ))}
           </div>
 
@@ -289,9 +252,7 @@ export default function HomePage() {
                     <h3 className="text-2xl font-heading font-bold text-white group-hover:text-gold transition-colors">
                       {loc.name}
                     </h3>
-                    <span className="mt-3 text-white/50">
-                      {loc.phone}
-                    </span>
+                    <span className="mt-3 text-white/50">{loc.phone}</span>
                     <span className="mt-4 text-sm text-gold uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                       Explore Fleet &rarr;
                     </span>
