@@ -6,6 +6,9 @@ import { LOCATIONS, TRUST_STATS } from "@/lib/constants";
 import { getFeaturedVehicles } from "@/lib/queries";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { generateAutoRentalSchema } from "@/lib/schemas";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
+import { CountUp } from "@/components/animations/CountUp";
 
 export default async function HomePage() {
   const featuredVehicles = await getFeaturedVehicles(6);
@@ -69,29 +72,25 @@ export default async function HomePage() {
       <section className="border-y border-white/5 bg-black/50 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/5">
-            <div className="flex flex-col items-center py-8 gap-2">
+            <ScrollReveal delay={0} className="flex flex-col items-center py-8 gap-2">
               <div className="flex items-center gap-1 text-gold">
                 <Star className="h-5 w-5 fill-current" />
-                <span className="text-2xl font-bold text-white">
-                  {TRUST_STATS.googleRating}
-                </span>
+                <CountUp end={5} duration={1.5} suffix=".0" className="text-2xl font-bold text-white" />
               </div>
               <span className="text-xs text-white/40 uppercase tracking-wider">
-                {TRUST_STATS.reviewCount}+ Google Reviews
+                <CountUp end={TRUST_STATS.reviewCount} duration={2} suffix="+" className="" /> Google Reviews
               </span>
-            </div>
-            <div className="flex flex-col items-center py-8 gap-2">
+            </ScrollReveal>
+            <ScrollReveal delay={0.1} className="flex flex-col items-center py-8 gap-2">
               <div className="flex items-center gap-1">
                 <MapPin className="h-5 w-5 text-gold" />
-                <span className="text-2xl font-bold text-white">
-                  {TRUST_STATS.locationCount}
-                </span>
+                <CountUp end={TRUST_STATS.locationCount} duration={1.5} className="text-2xl font-bold text-white" />
               </div>
               <span className="text-xs text-white/40 uppercase tracking-wider">
                 Florida Locations
               </span>
-            </div>
-            <div className="flex flex-col items-center py-8 gap-2">
+            </ScrollReveal>
+            <ScrollReveal delay={0.2} className="flex flex-col items-center py-8 gap-2">
               <div className="flex items-center gap-1">
                 <Clock className="h-5 w-5 text-gold" />
                 <span className="text-2xl font-bold text-white">
@@ -101,13 +100,13 @@ export default async function HomePage() {
               <span className="text-xs text-white/40 uppercase tracking-wider">
                 Concierge Support
               </span>
-            </div>
-            <div className="flex flex-col items-center py-8 gap-2">
-              <span className="text-2xl font-bold text-white">28+</span>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3} className="flex flex-col items-center py-8 gap-2">
+              <CountUp end={28} duration={2} suffix="+" className="text-2xl font-bold text-white" />
               <span className="text-xs text-white/40 uppercase tracking-wider">
                 Exotic Vehicles
               </span>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -115,7 +114,7 @@ export default async function HomePage() {
       {/* Featured Fleet */}
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <ScrollReveal className="text-center mb-16">
             <p className="text-gold text-sm font-semibold uppercase tracking-[0.2em] mb-4">
               Our Collection
             </p>
@@ -126,13 +125,15 @@ export default async function HomePage() {
               Hand-picked from our premium fleet. Each vehicle is meticulously
               maintained for an unparalleled driving experience.
             </p>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.1}>
             {featuredVehicles.map((vehicle: any) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} />
+              <StaggerItem key={vehicle.id}>
+                <VehicleCard vehicle={vehicle} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
 
           <div className="mt-12 text-center">
             <Link href="/fleet">
@@ -151,16 +152,16 @@ export default async function HomePage() {
       {/* How It Works */}
       <section className="py-24 border-t border-white/5 bg-black/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <ScrollReveal className="text-center mb-16">
             <p className="text-gold text-sm font-semibold uppercase tracking-[0.2em] mb-4">
               Simple Process
             </p>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold text-white">
               How It Works
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-12" staggerDelay={0.15}>
             {[
               {
                 step: "01",
@@ -181,7 +182,7 @@ export default async function HomePage() {
                   "Sit back while we bring your dream car directly to your door, hotel, or airport.",
               },
             ].map((item) => (
-              <div key={item.step} className="text-center">
+              <StaggerItem key={item.step} className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-gold/20 mb-6">
                   <span className="text-gradient-gold text-2xl font-bold">
                     {item.step}
@@ -193,15 +194,15 @@ export default async function HomePage() {
                 <p className="text-white/50 leading-relaxed">
                   {item.description}
                 </p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* CTA Band */}
       <section className="py-20 bg-gradient-to-r from-gold/10 via-gold/5 to-gold/10 border-y border-gold/10">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollReveal className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-heading text-3xl sm:text-5xl font-bold text-white mb-6">
             Ready to Drive Your{" "}
             <span className="text-gradient-gold">Dream Car?</span>
@@ -230,44 +231,45 @@ export default async function HomePage() {
               </Button>
             </a>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Locations */}
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <ScrollReveal className="text-center mb-16">
             <p className="text-gold text-sm font-semibold uppercase tracking-[0.2em] mb-4">
               Serving All of Florida
             </p>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold text-white">
               Our Locations
             </h2>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
             {(["tampa", "miami", "orlando"] as const).map((key) => {
               const loc = LOCATIONS[key];
               return (
-                <Link
-                  key={key}
-                  href={`/locations/${key}`}
-                  className="group relative overflow-hidden rounded-lg border border-white/5 bg-card p-8 transition-all duration-300 hover:border-gold/20"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <MapPin className="h-8 w-8 text-gold mb-4" />
-                    <h3 className="text-2xl font-heading font-bold text-white group-hover:text-gold transition-colors">
-                      {loc.name}
-                    </h3>
-                    <span className="mt-3 text-white/50">{loc.phone}</span>
-                    <span className="mt-4 text-sm text-gold uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                      Explore Fleet &rarr;
-                    </span>
-                  </div>
-                </Link>
+                <StaggerItem key={key}>
+                  <Link
+                    href={`/locations/${key}`}
+                    className="group relative overflow-hidden rounded-lg border border-white/5 bg-card p-8 transition-all duration-300 hover:border-gold/20 block"
+                  >
+                    <div className="flex flex-col items-center text-center">
+                      <MapPin className="h-8 w-8 text-gold mb-4" />
+                      <h3 className="text-2xl font-heading font-bold text-white group-hover:text-gold transition-colors">
+                        {loc.name}
+                      </h3>
+                      <span className="mt-3 text-white/50">{loc.phone}</span>
+                      <span className="mt-4 text-sm text-gold uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        Explore Fleet &rarr;
+                      </span>
+                    </div>
+                  </Link>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
     </>
