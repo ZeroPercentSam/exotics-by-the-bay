@@ -11,6 +11,7 @@ import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { generateVehicleSchema, generateBreadcrumbSchema } from "@/lib/schemas";
 import {
   Phone,
   Gauge,
@@ -99,8 +100,24 @@ export default async function VehicleDetailPage({
     { label: "0-60 MPH", value: specs.zero_to_sixty, icon: Zap },
   ].filter((s) => s.value);
 
+  const vehicleSchema = generateVehicleSchema(vehicle);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://exoticsbythebay.co" },
+    { name: "Fleet", url: "https://exoticsbythebay.co/fleet" },
+    { name: vehicle.name, url: `https://exoticsbythebay.co/fleet/${vehicle.slug}` },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       {/* Breadcrumb */}
       <div className="pt-28 lg:pt-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -5,12 +5,19 @@ import { Phone, Star, MapPin, Clock, ChevronRight } from "lucide-react";
 import { LOCATIONS, TRUST_STATS } from "@/lib/constants";
 import { getFeaturedVehicles } from "@/lib/queries";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
+import { generateAutoRentalSchema } from "@/lib/schemas";
 
 export default async function HomePage() {
   const featuredVehicles = await getFeaturedVehicles(6);
+  const autoRentalSchema = generateAutoRentalSchema();
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(autoRentalSchema) }}
+      />
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
