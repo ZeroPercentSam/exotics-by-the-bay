@@ -20,6 +20,7 @@ interface FleetPageProps {
     brand?: string;
     city?: string;
     price?: string;
+    category?: string;
     sort?: string;
   }>;
 }
@@ -40,16 +41,26 @@ export default async function FleetPage({ searchParams }: FleetPageProps) {
     getVehicles({
       brand: params.brand,
       city: params.city,
+      category: params.category,
       priceMin,
       priceMax,
     }),
     getBrands(),
   ]);
 
+  // Sort vehicles
+  const sortedVehicles = [...vehicles];
+  if (params.sort === "price-asc") {
+    sortedVehicles.sort((a: any, b: any) => a.daily_rate - b.daily_rate);
+  } else if (params.sort === "newest") {
+    sortedVehicles.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+  // Default: price-desc (already sorted by query)
+
   return (
     <>
       {/* Hero Banner */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
+      <section className="pt-20 pb-8 lg:pt-40 lg:pb-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-gold text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Our Collection
@@ -74,14 +85,14 @@ export default async function FleetPage({ searchParams }: FleetPageProps) {
               <VehicleFilters brands={brands} />
             </Suspense>
             <p className="text-sm text-white/40">
-              {vehicles.length} vehicle{vehicles.length !== 1 ? "s" : ""} available
+              {sortedVehicles.length} vehicle{sortedVehicles.length !== 1 ? "s" : ""} available
             </p>
           </div>
 
           {/* Vehicle Grid */}
-          {vehicles.length > 0 ? (
+          {sortedVehicles.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {vehicles.map((vehicle: any) => (
+              {sortedVehicles.map((vehicle: any) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}
             </div>

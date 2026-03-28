@@ -23,10 +23,28 @@ export default async function HomePage() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold/5 via-transparent to-transparent" />
+        {/* Mobile hero background */}
+        <Image
+          src="/hero/hero-mobile.webp"
+          alt="Exotics By The Bay fleet lineup at sunset"
+          fill
+          priority
+          className="object-cover object-center sm:hidden"
+          sizes="100vw"
+        />
+        {/* Desktop hero background */}
+        <Image
+          src="/hero/hero-desktop.webp"
+          alt="Exotics By The Bay fleet lineup at sunset"
+          fill
+          priority
+          className="object-cover object-center hidden sm:block"
+          sizes="100vw"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center pt-24">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center pt-8 sm:pt-24">
           <p className="text-gold text-sm font-semibold uppercase tracking-[0.3em] mb-6">
             Tampa &bull; Miami &bull; Orlando
           </p>
@@ -60,9 +78,15 @@ export default async function HomePage() {
               </Button>
             </a>
           </div>
+
+          {/* Mobile scroll indicator (inline to avoid bottom bar overlap) */}
+          <div className="mt-8 mb-16 flex sm:hidden flex-col items-center gap-2 text-white/30 animate-bounce">
+            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            <div className="h-8 w-px bg-gradient-to-b from-white/30 to-transparent" />
+          </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
+        <div className="hidden sm:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-white/30 animate-bounce">
           <span className="text-xs uppercase tracking-widest">Scroll</span>
           <div className="h-8 w-px bg-gradient-to-b from-white/30 to-transparent" />
         </div>

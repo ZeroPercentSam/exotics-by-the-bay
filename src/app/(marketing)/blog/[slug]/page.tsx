@@ -78,14 +78,15 @@ export default async function BlogPostPage({
       </section>
 
       {/* Featured Image */}
-      {post.featured_image && (
+      {post.featured_image_url && (
         <section className="pb-12">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="relative aspect-[16/9] rounded-lg overflow-hidden border border-white/5">
               <Image
-                src={post.featured_image}
+                src={post.featured_image_url}
                 alt={post.title}
                 fill
+                unoptimized
                 className="object-cover"
                 priority
               />

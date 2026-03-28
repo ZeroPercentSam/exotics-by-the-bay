@@ -52,12 +52,13 @@ export default async function BlogPage() {
                   href={`/blog/${post.slug}`}
                   className="group rounded-lg border border-white/5 bg-card overflow-hidden transition-all duration-300 hover:border-gold/20"
                 >
-                  {post.featured_image && (
+                  {post.featured_image_url && (
                     <div className="relative aspect-[16/9] overflow-hidden">
                       <Image
-                        src={post.featured_image}
+                        src={post.featured_image_url}
                         alt={post.title}
                         fill
+                        unoptimized
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>

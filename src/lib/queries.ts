@@ -10,6 +10,17 @@ export async function getVehicles(filters?: {
 }) {
   const supabase = await createClient();
 
+  // Look up brand_id if filtering by brand slug
+  let brandId: string | undefined;
+  if (filters?.brand) {
+    const { data: brandData } = await supabase
+      .from("brands")
+      .select("id")
+      .eq("slug", filters.brand)
+      .single();
+    brandId = brandData?.id;
+  }
+
   let query = supabase
     .from("vehicles")
     .select(`
@@ -23,8 +34,8 @@ export async function getVehicles(filters?: {
     .eq("is_available", true)
     .order("daily_rate", { ascending: false });
 
-  if (filters?.brand) {
-    query = query.eq("brand.slug", filters.brand);
+  if (brandId) {
+    query = query.eq("brand_id", brandId);
   }
   if (filters?.category) {
     query = query.eq("category", filters.category);
@@ -32,10 +43,10 @@ export async function getVehicles(filters?: {
   if (filters?.featured) {
     query = query.eq("is_featured", true);
   }
-  if (filters?.priceMin) {
+  if (filters?.priceMin !== undefined && filters.priceMin > 0) {
     query = query.gte("daily_rate", filters.priceMin);
   }
-  if (filters?.priceMax) {
+  if (filters?.priceMax !== undefined) {
     query = query.lte("daily_rate", filters.priceMax);
   }
 
